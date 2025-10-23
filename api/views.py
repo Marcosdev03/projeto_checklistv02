@@ -15,20 +15,36 @@ from django.utils import timezone
 from datetime import timedelta
 
 
-class TarefaViewSet(viewsets.ModelViewSet):
-    """Endpoint para gerenciar Tarefas."""
-    serializer_class = TarefaSerializer
-    permission_classes = [IsAuthenticated, IsOwner]
-    filterset_fields = ['status', 'usuario']
+# api/views.py
+from rest_framework.permissions import IsAuthenticated, AllowAny # Importe AllowAny
+
+class UsuarioViewSet(viewsets.ModelViewSet):
+    """Endpoint para gerenciar Usuários."""
+    serializer_class = UsuarioSerializer
+    # queryset = Usuario.objects.all() # <-- VAMOS MUDAR ISSO
 
     def get_queryset(self):
         """
-        Esta view deve retornar uma lista de todas as tarefas
-        para o usuário autenticado atualmente.
+        Usuários logados só podem ver/editar a si mesmos.
         """
         user = self.request.user
-        return Tarefa.objects.filter(usuario=user)
+        if user.is_authenticated:
+            return Usuario.objects.filter(id=user.id)
+        return Usuario.objects.none() # Não retorna nada se não estiver logado
 
+    def get_permissions(self):
+        """
+        Define permissões por ação:
+        - 'create' (registro): Qualquer um pode.
+        - Outras (listar, ver, atualizar): Apenas o próprio usuário.
+        """
+        if self.action == 'create':
+            permission_classes = [AllowAny]
+        else:
+            permission_classes = [IsAuthenticated]
+        return [permission() for permission in permission_classes]
+
+    # ... (o resto dos seus métodos @extend_schema) ...
     @extend_schema(
         summary="Listar todas as tarefas",
         description="Retorna uma lista com todas as tarefas cadastradas no sistema."

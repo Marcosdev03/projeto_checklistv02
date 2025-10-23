@@ -2,10 +2,17 @@ from rest_framework import serializers
 from .models import Tarefa
 from .models import Usuario
 
+# api/serializers.py
 class TarefaSerializer(serializers.ModelSerializer):
+    # Torna o campo 'usuario' somente leitura.
+    # Ele será preenchido automaticamente pela view, não enviado pelo cliente.
+    usuario = serializers.ReadOnlyField(source='usuario.email')
+
     class Meta:
         model = Tarefa
-        fields = '__all__'
+        # Remova 'usuario' de 'fields' se estiver explícito, ou use 'read_only_fields'
+        fields = ['id', 'titulo', 'descricao', 'status', 'data_criacao', 'usuario']
+        read_only_fields = ['usuario']
 
 
 class UsuarioSerializer(serializers.ModelSerializer):
