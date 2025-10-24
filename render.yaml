@@ -13,7 +13,7 @@ services:
     repo: https://github.com/Marcosdev03/projeto_checklistv02.git
     branch: main
     envVarGroups:
-      - name: prod-secrets
+      - prod-secrets # <-- CORREÇÃO: Apenas o nome do grupo
     buildCommand: |
       pip install --upgrade pip
       pip install -r requirements.txt
@@ -35,7 +35,7 @@ services:
     repo: https://github.com/Marcosdev03/projeto_checklistv02.git
     branch: homolog
     envVarGroups:
-      - name: hml-secrets
+      - hml-secrets # <-- CORREÇÃO: Apenas o nome do grupo
     buildCommand: |
       pip install --upgrade pip
       pip install -r requirements.txt
@@ -57,7 +57,7 @@ services:
     repo: https://github.com/Marcosdev03/projeto_checklistv02.git
     branch: develop
     envVarGroups:
-      - name: dev-secrets
+      - dev-secrets # <-- CORREÇÃO: Apenas o nome do grupo
     buildCommand: |
       pip install --upgrade pip
       pip install -r requirements.txt
