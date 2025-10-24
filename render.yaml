@@ -1,73 +1,79 @@
-# render.yaml
-
-envVarGroups:
-  - name: prod-secrets
-  - name: hml-secrets
-  - name: dev-secrets
+# Define environment variable groups (optional: omit if managing via dashboard)
+# (Not defining envVars here to avoid overwriting existing secrets in Render)
+# envVarGroups:
+#   - name: prod-secrets
+#   - name: hml-secrets
+#   - name: dev-secrets
 
 services:
-  # --- SERVIÇO DE PRODUÇÃO ---
+  # --- Production Service ---
   - type: web
     name: checklist-api-prod
     env: python
     repo: https://github.com/Marcosdev03/projeto_checklistv02.git
     branch: main
-    envVarGroups:
-      - name: prod-secrets
+    plan: starter               # Plan for the service (e.g., starter=free, standard, etc.):contentReference[oaicite:13]{index=13}
+    region: oregon              # Deployment region (optional, default is Oregon):contentReference[oaicite:14]{index=14}
     buildCommand: |
       pip install --upgrade pip
       pip install -r requirements.txt
       python manage.py collectstatic --noinput --settings=config.settings.prod
     startCommand: |
-      python manage.py migrate --settings=config.settings.prod && gunicorn config.wsgi --bind 0.0.0.0:$PORT --settings=config.settings.prod
+      python manage.py migrate --settings=config.settings.prod && \
+      gunicorn config.wsgi --bind 0.0.0.0:$PORT --settings=config.settings.prod
     envVars:
+      - fromGroup: prod-secrets        # include all env vars from the prod-secrets group:contentReference[oaicite:15]{index=15}
       - key: DJANGO_SETTINGS_MODULE
         value: config.settings.prod
       - key: PYTHON_VERSION
-        value: '3.11'
+        value: "3.11"                 # Python runtime version to use:contentReference[oaicite:16]{index=16}
       - key: WEB_CONCURRENCY
-        value: 4
+        value: "4"
 
-  # --- SERVIÇO DE HOMOLOGAÇÃO ---
+  # --- Staging (Homologação) Service ---
   - type: web
     name: checklist-api-hml
     env: python
     repo: https://github.com/Marcosdev03/projeto_checklistv02.git
     branch: homolog
-    envVarGroups:
-      - name: hml-secrets
+    plan: starter               # e.g., use free plan for staging (adjust as needed)
+    region: oregon
     buildCommand: |
       pip install --upgrade pip
       pip install -r requirements.txt
       python manage.py collectstatic --noinput --settings=config.settings.hml
     startCommand: |
-      python manage.py migrate --settings=config.settings.hml && gunicorn config.wsgi --bind 0.0.0.0:$PORT --settings=config.settings.hml
+      python manage.py migrate --settings=config.settings.hml && \
+      gunicorn config.wsgi --bind 0.0.0.0:$PORT --settings=config.settings.hml
     envVars:
+      - fromGroup: hml-secrets         # include all env vars from the hml-secrets group:contentReference[oaicite:17]{index=17}
       - key: DJANGO_SETTINGS_MODULE
         value: config.settings.hml
       - key: PYTHON_VERSION
-        value: '3.11'
+        value: "3.11"
       - key: WEB_CONCURRENCY
-        value: 2
+        value: "2"
 
-  # --- SERVIÇO DE DESENVOLVIMENTO ONLINE ---
+  # --- Development Service ---
   - type: web
     name: checklist-api-dev
     env: python
     repo: https://github.com/Marcosdev03/projeto_checklistv02.git
     branch: develop
-    envVarGroups:
-      - name: dev-secrets
+    plan: starter               # likely keep dev on free tier
+    region: oregon
     buildCommand: |
       pip install --upgrade pip
       pip install -r requirements.txt
       python manage.py collectstatic --noinput --settings=config.settings.dev
     startCommand: |
-      python manage.py migrate --settings=config.settings.dev && gunicorn config.wsgi --bind 0.0.0.0:$PORT --settings=config.settings.dev
+      python manage.py migrate --settings=config.settings.dev && \
+      gunicorn config.wsgi --bind 0.0.0.0:$PORT --settings=config.settings.dev
     envVars:
+      - fromGroup: dev-secrets         # include all env vars from the dev-secrets group:contentReference[oaicite:18]{index=18}
       - key: DJANGO_SETTINGS_MODULE
         value: config.settings.dev
       - key: PYTHON_VERSION
-        value: '3.11'
+        value: "3.11"
       - key: WEB_CONCURRENCY
-        value: 1
+        value: "1"
