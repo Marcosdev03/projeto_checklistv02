@@ -8,12 +8,11 @@ envVarGroups:
 services:
   # --- SERVIÇO DE PRODUÇÃO ---
   - type: web
-    name: checklist-api-prod # <-- MUDE SE NECESSÁRIO
+    name: checklist-api-prod
     env: python
-    repo: https://github.com/Marcosdev03/projeto_checklistv02.git # <-- CONFIRME SEU REPO
+    repo: https://github.com/Marcosdev03/projeto_checklistv02.git
     branch: main
-    envVarGroups:        # <-- CORREÇÃO: Alinhado com 'type', 'name', etc.
-      - prod-secrets
+    envVarGroup: prod-secrets
     buildCommand: |
       pip install --upgrade pip
       pip install -r requirements.txt
@@ -30,12 +29,11 @@ services:
 
   # --- SERVIÇO DE HOMOLOGAÇÃO ---
   - type: web
-    name: checklist-api-hml # <-- MUDE SE NECESSÁRIO
+    name: checklist-api-hml
     env: python
-    repo: https://github.com/Marcosdev03/projeto_checklistv02.git # <-- CONFIRME SEU REPO
+    repo: https://github.com/Marcosdev03/projeto_checklistv02.git
     branch: homolog
-    envVarGroups:        # <-- CORREÇÃO: Alinhado com 'type', 'name', etc.
-      - hml-secrets
+    envVarGroup: hml-secrets
     buildCommand: |
       pip install --upgrade pip
       pip install -r requirements.txt
@@ -52,12 +50,11 @@ services:
 
   # --- SERVIÇO DE DESENVOLVIMENTO ONLINE ---
   - type: web
-    name: checklist-api-dev # <-- MUDE SE NECESSÁRIO
+    name: checklist-api-dev
     env: python
-    repo: https://github.com/Marcosdev03/projeto_checklistv02.git # <-- CONFIRME SEU REPO
+    repo: https://github.com/Marcosdev03/projeto_checklistv02.git
     branch: develop
-    envVarGroups:        # <-- CORREÇÃO: Alinhado com 'type', 'name', etc.
-      - dev-secrets
+    envVarGroup: dev-secrets
     buildCommand: |
       pip install --upgrade pip
       pip install -r requirements.txt
