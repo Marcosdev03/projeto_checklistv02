@@ -1,0 +1,73 @@
+# render.yaml
+
+envVarGroups:
+  - name: prod-secrets
+  - name: hml-secrets
+  - name: dev-secrets
+
+services:
+  # --- SERVIÇO DE PRODUÇÃO ---
+  - type: web
+    name: checklist-api-prod # <-- MUDE PARA UM NOME ÚNICO (ex: seu-nome-api-prod)
+    env: python
+    repo: https://github.com/Marcosdev03/projeto_checklistv02.git # <-- CONFIRME SEU REPO
+    branch: main
+    envVarGroups:
+      - prod-secrets
+    buildCommand: |
+      pip install --upgrade pip
+      pip install -r requirements.txt
+      python manage.py collectstatic --noinput --settings=config.settings.prod
+    startCommand: |
+      python manage.py migrate --settings=config.settings.prod && gunicorn config.wsgi --bind 0.0.0.0:$PORT --settings=config.settings.prod
+    envVars:
+      - key: DJANGO_SETTINGS_MODULE
+        value: config.settings.prod
+      - key: PYTHON_VERSION
+        value: '3.11' # Ou a versão que você usa
+      - key: WEB_CONCURRENCY # Número de workers (ajuste conforme o plano)
+        value: 4 # Ex: 4 para plano Starter
+
+  # --- SERVIÇO DE HOMOLOGAÇÃO ---
+  - type: web
+    name: checklist-api-hml # <-- MUDE PARA UM NOME ÚNICO (ex: seu-nome-api-hml)
+    env: python
+    repo: https://github.com/Marcosdev03/projeto_checklistv02.git # <-- CONFIRME SEU REPO
+    branch: homolog
+    envVarGroups:
+      - hml-secrets
+    buildCommand: |
+      pip install --upgrade pip
+      pip install -r requirements.txt
+      python manage.py collectstatic --noinput --settings=config.settings.hml
+    startCommand: |
+      python manage.py migrate --settings=config.settings.hml && gunicorn config.wsgi --bind 0.0.0.0:$PORT --settings=config.settings.hml
+    envVars:
+      - key: DJANGO_SETTINGS_MODULE
+        value: config.settings.hml
+      - key: PYTHON_VERSION
+        value: '3.11'
+      - key: WEB_CONCURRENCY
+        value: 2 # Ex: 2 para plano Free/Starter
+
+  # --- SERVIÇO DE DESENVOLVIMENTO ONLINE ---
+  - type: web
+    name: checklist-api-dev # <-- MUDE PARA UM NOME ÚNICO (ex: seu-nome-api-dev)
+    env: python
+    repo: https://github.com/Marcosdev03/projeto_checklistv02.git # <-- CONFIRME SEU REPO
+    branch: develop
+    envVarGroups:
+      - dev-secrets # <-- LEMBRE DE CRIAR ESTE GRUPO NO RENDER
+    buildCommand: |
+      pip install --upgrade pip
+      pip install -r requirements.txt
+      python manage.py collectstatic --noinput --settings=config.settings.dev
+    startCommand: |
+      python manage.py migrate --settings=config.settings.dev && gunicorn config.wsgi --bind 0.0.0.0:$PORT --settings=config.settings.dev
+    envVars:
+      - key: DJANGO_SETTINGS_MODULE
+        value: config.settings.dev
+      - key: PYTHON_VERSION
+        value: '3.11'
+      - key: WEB_CONCURRENCY
+        value: 1 # Ex: 1 para plano Free
