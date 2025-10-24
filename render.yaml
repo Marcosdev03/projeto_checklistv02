@@ -8,11 +8,11 @@ envVarGroups:
 services:
   # --- SERVIÇO DE PRODUÇÃO ---
   - type: web
-    name: checklist-api-prod # <-- MUDE PARA UM NOME ÚNICO (ex: seu-nome-api-prod)
+    name: checklist-api-prod # <-- MUDE SE NECESSÁRIO
     env: python
     repo: https://github.com/Marcosdev03/projeto_checklistv02.git # <-- CONFIRME SEU REPO
     branch: main
-    envVarGroups:
+    envVarGroups:        # <-- CORREÇÃO: Alinhado com 'type', 'name', etc.
       - prod-secrets
     buildCommand: |
       pip install --upgrade pip
@@ -24,17 +24,17 @@ services:
       - key: DJANGO_SETTINGS_MODULE
         value: config.settings.prod
       - key: PYTHON_VERSION
-        value: '3.11' # Ou a versão que você usa
-      - key: WEB_CONCURRENCY # Número de workers (ajuste conforme o plano)
-        value: 4 # Ex: 4 para plano Starter
+        value: '3.11'
+      - key: WEB_CONCURRENCY
+        value: 4
 
   # --- SERVIÇO DE HOMOLOGAÇÃO ---
   - type: web
-    name: checklist-api-hml # <-- MUDE PARA UM NOME ÚNICO (ex: seu-nome-api-hml)
+    name: checklist-api-hml # <-- MUDE SE NECESSÁRIO
     env: python
     repo: https://github.com/Marcosdev03/projeto_checklistv02.git # <-- CONFIRME SEU REPO
     branch: homolog
-    envVarGroups:
+    envVarGroups:        # <-- CORREÇÃO: Alinhado com 'type', 'name', etc.
       - hml-secrets
     buildCommand: |
       pip install --upgrade pip
@@ -48,16 +48,16 @@ services:
       - key: PYTHON_VERSION
         value: '3.11'
       - key: WEB_CONCURRENCY
-        value: 2 # Ex: 2 para plano Free/Starter
+        value: 2
 
   # --- SERVIÇO DE DESENVOLVIMENTO ONLINE ---
   - type: web
-    name: checklist-api-dev # <-- MUDE PARA UM NOME ÚNICO (ex: seu-nome-api-dev)
+    name: checklist-api-dev # <-- MUDE SE NECESSÁRIO
     env: python
     repo: https://github.com/Marcosdev03/projeto_checklistv02.git # <-- CONFIRME SEU REPO
     branch: develop
-    envVarGroups:
-      - dev-secrets # <-- LEMBRE DE CRIAR ESTE GRUPO NO RENDER
+    envVarGroups:        # <-- CORREÇÃO: Alinhado com 'type', 'name', etc.
+      - dev-secrets
     buildCommand: |
       pip install --upgrade pip
       pip install -r requirements.txt
@@ -70,4 +70,4 @@ services:
       - key: PYTHON_VERSION
         value: '3.11'
       - key: WEB_CONCURRENCY
-        value: 1 # Ex: 1 para plano Free
+        value: 1
