@@ -12,7 +12,8 @@ services:
     env: python
     repo: https://github.com/Marcosdev03/projeto_checklistv02.git
     branch: main
-    envVarGroup: prod-secrets
+    envVarGroups:
+      - name: prod-secrets
     buildCommand: |
       pip install --upgrade pip
       pip install -r requirements.txt
@@ -33,7 +34,8 @@ services:
     env: python
     repo: https://github.com/Marcosdev03/projeto_checklistv02.git
     branch: homolog
-    envVarGroup: hml-secrets
+    envVarGroups:
+      - name: hml-secrets
     buildCommand: |
       pip install --upgrade pip
       pip install -r requirements.txt
@@ -54,7 +56,8 @@ services:
     env: python
     repo: https://github.com/Marcosdev03/projeto_checklistv02.git
     branch: develop
-    envVarGroup: dev-secrets
+    envVarGroups:
+      - name: dev-secrets
     buildCommand: |
       pip install --upgrade pip
       pip install -r requirements.txt
