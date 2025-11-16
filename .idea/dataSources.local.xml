@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
-  <component name="dataSourceStorageLocal" created-in="PY-252.26830.99">
+  <component name="dataSourceStorageLocal" created-in="PY-252.27397.106">
     <data-source name="Django default" uuid="8da0ee62-8e83-4910-a451-0d314e3beae8">
       <database-info product="" version="" jdbc-version="" driver-name="" driver-version="" dbms="MYSQL" />
       <user-name>root</user-name>

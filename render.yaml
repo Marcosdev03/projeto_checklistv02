@@ -9,7 +9,7 @@ services:
   # --- Production Service ---
   - type: web
     name: checklist-api-prod
-    env: python
+    runtime: docker
     repo: https://github.com/Marcosdev03/projeto_checklistv02.git
     branch: main
     plan: starter               # Plan for the service (e.g., starter=free, standard, etc.):contentReference[oaicite:13]{index=13}
@@ -26,14 +26,14 @@ services:
       - key: DJANGO_SETTINGS_MODULE
         value: config.settings.prod
       - key: PYTHON_VERSION
-        value: "3.11"                 # Python runtime version to use:contentReference[oaicite:16]{index=16}
+        value: "3.13"                 # Python runtime version to use
       - key: WEB_CONCURRENCY
         value: "4"
 
   # --- Staging (Homologação) Service ---
   - type: web
     name: checklist-api-hml
-    env: python
+    runtime: docker
     repo: https://github.com/Marcosdev03/projeto_checklistv02.git
     branch: homolog
     plan: starter               # e.g., use free plan for staging (adjust as needed)
@@ -50,14 +50,14 @@ services:
       - key: DJANGO_SETTINGS_MODULE
         value: config.settings.hml
       - key: PYTHON_VERSION
-        value: "3.11"
+        value: "3.13"
       - key: WEB_CONCURRENCY
         value: "2"
 
   # --- Development Service ---
   - type: web
     name: checklist-api-dev
-    env: python
+    runtime: docker
     repo: https://github.com/Marcosdev03/projeto_checklistv02.git
     branch: develop
     plan: starter               # likely keep dev on free tier
@@ -74,6 +74,6 @@ services:
       - key: DJANGO_SETTINGS_MODULE
         value: config.settings.dev
       - key: PYTHON_VERSION
-        value: "3.11"
+        value: "3.13"
       - key: WEB_CONCURRENCY
         value: "1"

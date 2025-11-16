@@ -2,17 +2,23 @@ from rest_framework import serializers
 from .models import Tarefa
 from .models import Usuario
 
+from rest_framework import serializers
+from .models import Tarefa, Usuario
+
+
 # api/serializers.py
 class TarefaSerializer(serializers.ModelSerializer):
     # Torna o campo 'usuario' somente leitura.
     # Ele será preenchido automaticamente pela view, não enviado pelo cliente.
-    usuario = serializers.ReadOnlyField(source='usuario.email')
+    # Expor o id do usuário como campo `usuario` e o email como `usuario_email`.
+    usuario = serializers.ReadOnlyField(source='usuario.id')
+    usuario_email = serializers.ReadOnlyField(source='usuario.email')
 
     class Meta:
         model = Tarefa
         # Remova 'usuario' de 'fields' se estiver explícito, ou use 'read_only_fields'
-        fields = ['id', 'titulo', 'descricao', 'status', 'data_criacao', 'usuario']
-        read_only_fields = ['usuario']
+        fields = ['id', 'titulo', 'descricao', 'status', 'data_criacao', 'usuario', 'usuario_email']
+        read_only_fields = ['usuario', 'usuario_email']
 
 
 class UsuarioSerializer(serializers.ModelSerializer):
@@ -36,7 +42,6 @@ class PasswordResetRequestSerializer(serializers.Serializer):
     Serializer para solicitar a redefinição de senha. Apenas valida o email.
     """
     email = serializers.EmailField(required=True)
-
 
 
 class PasswordResetConfirmSerializer(serializers.Serializer):

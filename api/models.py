@@ -13,13 +13,18 @@ class UserManager(BaseUserManager):
 
         return user
 
-    def create_superuser(self, email, first_name, password):
-        user = self.create_user(email, first_name, password)
-        user.is_staff = True
-        user.is_superuser = True
-        user.save(using=self._db)
+    def create_superuser(self, email, first_name, password=None, **extra_fields):
+        """Cria um superuser garantindo as flags necessárias.
 
-        return user
+        Aceitamos **extra_fields para compatibilidade e delegamos para create_user.
+        """
+        extra_fields.setdefault('is_staff', True)
+        extra_fields.setdefault('is_superuser', True)
+
+        if password is None:
+            raise ValueError('Superuser must have a password.')
+
+        return self.create_user(email, first_name, password, **extra_fields)
 
 
 
@@ -43,7 +48,8 @@ class Tarefa(models.Model):
         CONCLUIDA = 'CONCLUIDA', 'Concluida'
 
     titulo = models.CharField(max_length=255)
-    descricao = models.CharField(max_length=255)
+    # Se esperamos descrições maiores, TextField é mais apropriado.
+    descricao = models.TextField()
     status = models.CharField(
         max_length=20,
         choices=StatusTarefa.choices,

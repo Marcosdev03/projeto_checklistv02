@@ -10,7 +10,8 @@ SECRET_KEY = config('SECRET_KEY')
 
 # O Host do seu app de PROD no Render
 PROD_HOSTNAME = config('PROD_HOSTNAME', default='sua-api-prod.onrender.com')
-ALLOWED_HOSTS = [PROD_HOSTNAME]
+ALLOWED_HOSTS = ["*", "127.0.0.1", "localhost"]
+
 
 # Banco de Dados de PROD (ex: um banco Aiven pago ou um AWS RDS)
 DATABASES = {
@@ -21,6 +22,11 @@ DATABASES = {
         'PASSWORD': config('DB_PASSWORD'),
         'HOST': config('DB_HOST'),
         'PORT': config('DB_PORT'),
+        'OPTIONS': {
+            'ssl': {
+                'ca': config('DB_SSL_CA_PATH', default=''),
+            }
+        } if config('DB_SSL_CA_PATH', default='') else {}
     }
 }
 

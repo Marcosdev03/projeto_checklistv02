@@ -1,0 +1,23 @@
+# docker-compose.yml - DESENVOLVIMENTO com SQLite (local)
+
+version: '3.8'
+
+services:
+
+  # Container 1: Django + SQLite (sem dependência de DB remoto)
+  app:
+    build: .
+    container_name: django_app
+    ports:
+      - "8000:8000"
+    volumes:
+      - static_volume:/app/staticfiles
+      - ./:/app
+    env_file:
+      - ./.env.local
+    # Executar com Gunicorn em modo desenvolvimento
+    command: gunicorn config.wsgi:application --bind 0.0.0.0:8000 --reload
+    restart: always
+
+volumes:
+  static_volume:

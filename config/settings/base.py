@@ -76,7 +76,10 @@ USE_I18N = True
 USE_TZ = True
 
 # Static files (CSS, JavaScript, Images)
-STATIC_URL = 'static/'
+# Vite produz assets referenciados em /assets/* no index.html.
+# Ajustamos STATIC_URL para '/assets/' para que WhiteNoise sirva os arquivos
+# no mesmo prefixo que o bundle espera.
+STATIC_URL = '/assets/'
 STATIC_ROOT = BASE_DIR / 'staticfiles' # Adicione esta linha
 STORAGES = {
     "staticfiles": {

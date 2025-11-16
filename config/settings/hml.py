@@ -10,7 +10,8 @@ SECRET_KEY = config('SECRET_KEY')
 
 # O Host do seu app de HML no Render
 HML_HOSTNAME = config('HML_HOSTNAME', default='sua-api-hml.onrender.com')
-ALLOWED_HOSTS = [HML_HOSTNAME]
+ALLOWED_HOSTS = ["*", "127.0.0.1", "localhost"]
+
 
 # Banco de Dados de HML (ex: seu Aiven gratuito)
 DATABASES = {
